@@ -1,0 +1,205 @@
+#ifndef VT_SCENE_H_
+#define VT_SCENE_H_
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <GL/glew.h>
+#include <vector>
+#include <map>
+#include <string>
+
+namespace vt {
+
+class Camera;
+class Light;
+class Material;
+class Mesh;
+class Texture;
+class Octree;
+
+struct DebugObjectContext
+{
+    glm::mat4 m_transform;
+    std::vector<glm::vec3> m_debug_origin_frame_values;
+    std::vector<glm::vec3> m_debug_origin_keyframe_values;
+};
+
+class Scene
+{
+public:
+    // for guide wires
+    glm::vec3 m_debug_target;
+    std::vector<glm::vec3> m_debug_targets;
+
+    std::map<long, DebugObjectContext> m_debug_object_context;
+
+    typedef enum { USE_MESH_MATERIAL,
+                   USE_NORMAL_MATERIAL,
+                   USE_WIREFRAME_MATERIAL,
+                   USE_SSAO_MATERIAL } use_material_type_t;
+
+    typedef std::vector<Light*>    lights_t;
+    typedef std::vector<Mesh*>     meshes_t;
+    typedef std::vector<Material*> materials_t;
+    typedef std::vector<Texture*>  textures_t;
+
+    static Scene* instance()
+    {
+        static Scene scene;
+        return &scene;
+    }
+
+    void set_camera(Camera* camera)
+    {
+        m_camera = camera;
+    }
+    Camera* get_camera() const
+    {
+        return m_camera;
+    }
+
+    void set_oct_tree(Octree* oct_tree)
+    {
+        m_oct_tree = oct_tree;
+    }
+    Octree* get_oct_tree() const
+    {
+        return m_oct_tree;
+    }
+
+    Light* find_light(std::string name);
+    void add_light(Light* light);
+    void remove_light(Light* light);
+
+    Mesh* find_mesh(std::string name);
+    void add_mesh(Mesh* mesh);
+    void remove_mesh(Mesh* mesh);
+
+    Material* find_material(std::string name);
+    void add_material(Material* material);
+    void remove_material(Material* material);
+
+    Texture* find_texture(std::string name);
+    void add_texture(Texture* texture);
+    void remove_texture(Texture* texture);
+
+    void set_skybox(Mesh* skybox)
+    {
+        m_skybox = skybox;
+    }
+    Mesh* get_skybox() const
+    {
+        return m_skybox;
+    }
+
+    void set_overlay(Mesh* overlay)
+    {
+        m_overlay = overlay;
+    }
+    Mesh* get_overlay() const
+    {
+        return m_overlay;
+    }
+
+    void set_normal_material(Material* material)
+    {
+        m_normal_material = material;
+    }
+    Material* get_normal_material() const
+    {
+        return m_normal_material;
+    }
+
+    void set_wireframe_material(Material* material)
+    {
+        m_wireframe_material = material;
+    }
+    Material* get_wireframe_material() const
+    {
+        return m_wireframe_material;
+    }
+
+    void set_ssao_material(Material* material)
+    {
+        m_ssao_material = material;
+    }
+    Material* get_ssao_material() const
+    {
+        return m_ssao_material;
+    }
+
+    void set_glow_cutoff_threshold(float glow_cutoff_threshold)
+    {
+        m_glow_cutoff_threshold = glow_cutoff_threshold;
+    }
+
+    void set_cursor_pos(glm::ivec2 cursor_pos);
+
+    void set_sprite_pos(int index, glm::vec2 sprite_pos);
+    glm::vec2 get_sprite_pos(int index) const;
+
+    void set_sprite_angle(int index, float angle);
+    float get_sprite_angle(int index) const;
+
+    void set_sprite_velocity(int index, float velocity);
+    float get_sprite_velocity(int index) const;
+
+    void set_sprite_angle_velocity(int index, float angle_velocity);
+    float get_sprite_angle_velocity(int index) const;
+
+    void set_sprite_count(int count);
+    int get_sprite_count() const
+    {
+        return m_sprite_count;
+    }
+
+    void reset();
+    void use_program();
+    void render(bool                clear_canvas      = true,
+                bool                render_overlay    = false,
+                bool                render_skybox     = true,
+                use_material_type_t use_material_type = use_material_type_t::USE_MESH_MATERIAL);
+    void render_oct_tree(Octree* oct_tree, glm::mat4 camera_transform) const;
+    void render_lines_and_text(bool  draw_guide_wires,
+                               bool  draw_paths,
+                               bool  draw_axis,
+                               bool  draw_axis_labels,
+                               bool  draw_bbox,
+                               bool  draw_normals,
+                               bool  draw_hud_text = false,
+                               char* hud_text      = const_cast<char*>("")) const;
+    void render_lights() const;
+
+private:
+    Camera*     m_camera;
+    Octree*     m_oct_tree;
+    Mesh*       m_skybox;
+    Mesh*       m_overlay;
+    lights_t    m_lights;
+    meshes_t    m_meshes;
+    materials_t m_materials;
+    textures_t  m_textures;
+    Material*   m_normal_material;
+    Material*   m_wireframe_material;
+    Material*   m_ssao_material;
+
+    GLfloat  m_bloom_kernel[7];
+    GLfloat  m_glow_cutoff_threshold;
+    GLfloat* m_light_pos;
+    GLfloat* m_light_color;
+    GLint*   m_light_enabled;
+    GLfloat* m_ssao_sample_kernel_pos;
+
+    glm::ivec2 m_cursor_pos;
+    glm::vec2* m_sprite_pos;
+    float*     m_sprite_angle;
+    float*     m_sprite_velocity;
+    float*     m_sprite_angle_velocity;
+    int        m_sprite_count;
+
+    Scene();
+    ~Scene();
+};
+
+}
+
+#endif
