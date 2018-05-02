@@ -1,3 +1,20 @@
+// This file is part of dexvt-lite.
+// -- 3D Inverse Kinematics (Cyclic Coordinate Descent) with Constraints
+// Copyright (C) 2018 onlyuser <mailto:onlyuser@gmail.com>
+//
+// dexvt-lite is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// dexvt-lite is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with dexvt-lite.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <Texture.h>
 #include <NamedObject.h>
 #include <FrameObject.h>
@@ -78,7 +95,7 @@ Texture::Texture(std::string name,
     unsigned char* pixels = NULL;
     size_t width  = 0;
     size_t height = 0;
-    if(!read_png(png_filename, (void**)&pixels, &width, &height, true) || !pixels) {
+    if(!read_png(png_filename, (void**)&pixels, &width, &height) || !pixels) {
         return;
     }
     alloc(Texture::RGBA,
@@ -136,27 +153,27 @@ Texture::Texture(std::string name,
     unsigned char* pixels_neg_y = NULL;
     unsigned char* pixels_pos_z = NULL;
     unsigned char* pixels_neg_z = NULL;
-    if(!read_png(png_filename_pos_x, (void**)&pixels_pos_x, &width, &height, true) || !pixels_pos_x) {
+    if(!read_png(png_filename_pos_x, (void**)&pixels_pos_x, &width, &height) || !pixels_pos_x) {
         std::cout << "failed to load cube map positive x" << std::endl;
         return;
     }
-    if(!read_png(png_filename_neg_x, (void**)&pixels_neg_x, &width, &height, true) || !pixels_neg_x) {
+    if(!read_png(png_filename_neg_x, (void**)&pixels_neg_x, &width, &height) || !pixels_neg_x) {
         std::cout << "failed to load cube map negative x" << std::endl;
         return;
     }
-    if(!read_png(png_filename_pos_y, (void**)&pixels_pos_y, &width, &height, true) || !pixels_pos_y) {
+    if(!read_png(png_filename_pos_y, (void**)&pixels_pos_y, &width, &height) || !pixels_pos_y) {
         std::cout << "failed to load cube map positive y" << std::endl;
         return;
     }
-    if(!read_png(png_filename_neg_y, (void**)&pixels_neg_y, &width, &height, true) || !pixels_neg_y) {
+    if(!read_png(png_filename_neg_y, (void**)&pixels_neg_y, &width, &height) || !pixels_neg_y) {
         std::cout << "failed to load cube map negative y" << std::endl;
         return;
     }
-    if(!read_png(png_filename_pos_z, (void**)&pixels_pos_z, &width, &height, true) || !pixels_pos_z) {
+    if(!read_png(png_filename_pos_z, (void**)&pixels_pos_z, &width, &height) || !pixels_pos_z) {
         std::cout << "failed to load cube map positive z" << std::endl;
         return;
     }
-    if(!read_png(png_filename_neg_z, (void**)&pixels_neg_z, &width, &height, true) || !pixels_neg_z) {
+    if(!read_png(png_filename_neg_z, (void**)&pixels_neg_z, &width, &height) || !pixels_neg_z) {
         std::cout << "failed to load cube map negative z" << std::endl;
         return;
     }

@@ -2,7 +2,7 @@
  * From the OpenGL Programming wikibook: http://en.wikibooks.org/wiki/OpenGL_Programming
  * This file is in the public domain.
  * Contributors: Sylvain Beucler
- * Enhanced by: Jerry Chen
+ * Enhanced by: onlyuser
  */
 
 /* Use glew.h instead of gl.h to get all the GL prototypes declared */
