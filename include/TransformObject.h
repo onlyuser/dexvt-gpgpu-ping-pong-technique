@@ -41,10 +41,10 @@ public:
     glm::vec3 m_debug_local_target;
     std::vector<std::tuple<glm::vec3, glm::vec3, glm::vec3> > m_debug_lines;
 
-    TransformObject(std::string name,
-                    glm::vec3   origin = glm::vec3(0),
-                    glm::vec3   euler  = glm::vec3(0),
-                    glm::vec3   scale  = glm::vec3(1));
+    TransformObject(const std::string& name,
+                          glm::vec3    origin = glm::vec3(0),
+                          glm::vec3    euler  = glm::vec3(0),
+                          glm::vec3    scale  = glm::vec3(1));
     virtual ~TransformObject();
 
     // basic features

@@ -234,7 +234,7 @@ bool read_file(std::string filename, std::string &s)
     return true;
 }
 
-bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_groups, size_t* start_pos)
+bool regexp(const std::string& s, const std::string& pattern, std::vector<std::string*> &cap_groups, size_t* start_pos)
 {
     int nmatch = cap_groups.size();
     if(!nmatch) {
@@ -272,12 +272,12 @@ bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_
     return true;
 }
 
-bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_groups)
+bool regexp(const std::string& s, const std::string& pattern, std::vector<std::string*> &cap_groups)
 {
     return regexp(s, pattern, cap_groups, NULL);
 }
 
-bool regexp(std::string &s, std::string pattern, int nmatch, ...)
+bool regexp(const std::string& s, const std::string& pattern, int nmatch, ...)
 {
     if(!nmatch) {
         return false;

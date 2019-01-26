@@ -26,7 +26,7 @@
 
 namespace vt {
 
-MeshBase* alloc_mesh_base(std::string name, size_t num_vertex, size_t num_tri);
+MeshBase* alloc_mesh_base(const std::string& name, size_t num_vertex, size_t num_tri);
 
 class Mesh;
 
@@ -40,19 +40,19 @@ static void read_string(FILE* stream, char* buf)
     } while(buf[i++]);
 }
 
-bool File3ds::load3ds(std::string filename, int index, std::vector<Mesh*>* meshes)
+bool File3ds::load3ds(const std::string& filename, int index, std::vector<Mesh*>* meshes)
 {
     std::vector<MeshBase*> meshes_iface;
     if(!load3ds_impl(filename, index, &meshes_iface)) {
         return false;
     }
-    for(std::vector<MeshBase*>::iterator p = meshes_iface.begin(); p != meshes_iface.end(); p++) {
+    for(std::vector<MeshBase*>::iterator p = meshes_iface.begin(); p != meshes_iface.end(); ++p) {
         meshes->push_back(cast_mesh(*p));
     }
     return true;
 }
 
-bool File3ds::load3ds_impl(std::string filename, int index, std::vector<MeshBase*>* meshes)
+bool File3ds::load3ds_impl(const std::string& filename, int index, std::vector<MeshBase*>* meshes)
 {
     if(!meshes) {
         return false;
@@ -112,7 +112,7 @@ bool File3ds::load3ds_impl(std::string filename, int index, std::vector<MeshBase
         }
         fclose(stream);
         glm::vec3 global_center = (global_min + global_max) * 0.5f;
-        for(std::vector<MeshBase*>::iterator p = meshes->begin(); p != meshes->end(); p++) {
+        for(std::vector<MeshBase*>::iterator p = meshes->begin(); p != meshes->end(); ++p) {
             (*p)->set_axis(global_center);
             (*p)->update_normals_and_tangents();
             (*p)->update_bbox();

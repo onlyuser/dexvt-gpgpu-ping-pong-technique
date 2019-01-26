@@ -32,17 +32,17 @@
 
 namespace vt {
 
-Camera::Camera(std::string       name,
-               glm::vec3         origin,
-               glm::vec3         target,
-               float             fov,
-               glm::ivec2        offset,
-               glm::ivec2        dim,
-               float             near_plane,
-               float             far_plane,
-               glm::vec2         ortho_dim,
-               float             zoom,
-               projection_mode_t projection_mode)
+Camera::Camera(const std::string&      name,
+                     glm::vec3         origin,
+                     glm::vec3         target,
+                     float             fov,
+                     glm::ivec2        offset,
+                     glm::ivec2        dim,
+                     float             near_plane,
+                     float             far_plane,
+                     glm::vec2         ortho_dim,
+                     float             zoom,
+                     projection_mode_t projection_mode)
     : TransformObject(name, origin),
       FrameObject(offset, dim),
       m_target(target),

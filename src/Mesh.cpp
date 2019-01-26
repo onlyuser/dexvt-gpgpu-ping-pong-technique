@@ -31,9 +31,9 @@
 
 namespace vt {
 
-Mesh::Mesh(std::string name,
-           size_t      num_vertex,
-           size_t      num_tri)
+Mesh::Mesh(const std::string& name,
+                 size_t       num_vertex,
+                 size_t       num_tri)
     : TransformObject(name),
       m_num_vertex(num_vertex),
       m_num_tri(num_tri),
@@ -56,6 +56,8 @@ Mesh::Mesh(std::string name,
       m_env_map_texture_index(-1),
       m_random_texture_index(-1),
       m_frontface_depth_overlay_texture_index(-1),
+      m_backface_depth_overlay_texture_index(-1),
+      m_backface_normal_overlay_texture_index(-1),
       m_reflect_to_refract_ratio(1)
 {
     m_vert_coords   = new GLfloat[ num_vertex * 3];
@@ -551,7 +553,7 @@ void Mesh::update_transform()
     m_transform = glm::translate(glm::mat4(1), m_origin) * get_local_rotation_transform() * glm::scale(glm::mat4(1), m_scale);
 }
 
-MeshBase* alloc_mesh_base(std::string name, size_t num_vertex, size_t num_tri)
+MeshBase* alloc_mesh_base(const std::string& name, size_t num_vertex, size_t num_tri)
 {
     return new Mesh(name, num_vertex, num_tri);
 }

@@ -38,9 +38,9 @@ class Mesh : public TransformObject,
              public MeshBase
 {
 public:
-    Mesh(std::string name,
-         size_t      num_vertex,
-         size_t      num_tri);
+    Mesh(const std::string& name,
+               size_t       num_vertex,
+               size_t       num_tri);
     virtual ~Mesh();
     void resize(size_t num_vertex, size_t num_tri, bool preserve_mesh_geometry = false);
     void merge(const MeshBase* other, bool copy_tex_coords = false);
@@ -238,7 +238,7 @@ private:
     void update_transform();
 };
 
-MeshBase* alloc_mesh_base(std::string name, size_t num_vertex, size_t num_tri);
+MeshBase* alloc_mesh_base(const std::string& name, size_t num_vertex, size_t num_tri);
 Mesh* cast_mesh(MeshBase* mesh);
 MeshBase* cast_mesh_base(Mesh* mesh);
 

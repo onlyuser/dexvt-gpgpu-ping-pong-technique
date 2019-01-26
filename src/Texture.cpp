@@ -28,12 +28,12 @@
 
 namespace vt {
 
-Texture::Texture(std::string          name,
-                 format_t             internal_format,
-                 glm::ivec2           dim,
-                 bool                 smooth,
-                 format_t             format,
-                 const unsigned char* pixels)
+Texture::Texture(const std::string&         name,
+                       format_t             internal_format,
+                       glm::ivec2           dim,
+                       bool                 smooth,
+                       format_t             format,
+                       const unsigned char* pixels)
     : NamedObject(name),
       FrameObject(glm::ivec2(0), dim),
       m_skybox(false),
@@ -77,9 +77,9 @@ Texture::Texture(std::string          name,
     update();
 }
 
-Texture::Texture(std::string name,
-                 std::string png_filename,
-                 bool        smooth)
+Texture::Texture(const std::string& name,
+                 const std::string& png_filename,
+                       bool         smooth)
     : NamedObject(name),
       FrameObject(glm::ivec2(0), glm::ivec2(0)),
       m_skybox(false),
@@ -108,13 +108,13 @@ Texture::Texture(std::string name,
     delete []pixels;
 }
 
-Texture::Texture(std::string name,
-                 std::string png_filename_pos_x,
-                 std::string png_filename_neg_x,
-                 std::string png_filename_pos_y,
-                 std::string png_filename_neg_y,
-                 std::string png_filename_pos_z,
-                 std::string png_filename_neg_z)
+Texture::Texture(const std::string& name,
+                 const std::string& png_filename_pos_x,
+                 const std::string& png_filename_neg_x,
+                 const std::string& png_filename_pos_y,
+                 const std::string& png_filename_neg_y,
+                 const std::string& png_filename_pos_z,
+                 const std::string& png_filename_neg_z)
     : NamedObject(name),
       FrameObject(glm::ivec2(0), glm::ivec2(0)),
       m_skybox(true),
@@ -340,6 +340,8 @@ size_t Texture::size() const
     return 0;
 }
 
+// NOTE: (warning) The class 'Texture' has 'operator=' but lack of 'copy constructor'.
+#if 1
 Texture& Texture::operator=(Texture& other)
 {
     assert(m_internal_format == other.get_internal_format());
@@ -350,6 +352,7 @@ Texture& Texture::operator=(Texture& other)
     update(); // upload to gpu
     return *this;
 }
+#endif
 
 //================
 // basic modifiers

@@ -103,11 +103,11 @@ float ray_plane_intersection(glm::vec3 plane_origin, glm::vec3 plane_normal, glm
 glm::vec3 projection_onto(glm::vec3 a, glm::vec3 b);
 glm::vec3 rejection_from(glm::vec3 a, glm::vec3 b);
 bool is_ray_sphere_intersection(glm::vec3 sphere_origin, float sphere_radius, glm::vec3 ray_origin, glm::vec3 ray_dir);
-glm::vec3 bezier_interpolate(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float alpha);
+glm::vec3 bezier_interpolate(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec3 p4, float alpha);
 bool read_file(std::string filename, std::string &s);
-bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_groups, size_t* start_pos);
-bool regexp(std::string &s, std::string pattern, std::vector<std::string*> &cap_groups);
-bool regexp(std::string &s, std::string pattern, int nmatch, ...);
+bool regexp(const std::string &s, const std::string& pattern, std::vector<std::string*> &cap_groups, size_t* start_pos);
+bool regexp(const std::string &s, const std::string& pattern, std::vector<std::string*> &cap_groups);
+bool regexp(const std::string &s, const std::string& pattern, int nmatch, ...);
 
 }
 

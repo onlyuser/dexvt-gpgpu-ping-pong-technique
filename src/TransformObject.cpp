@@ -27,10 +27,10 @@
 
 namespace vt {
 
-TransformObject::TransformObject(std::string name,
-                                 glm::vec3   origin,
-                                 glm::vec3   euler,
-                                 glm::vec3   scale)
+TransformObject::TransformObject(const std::string& name,
+                                       glm::vec3    origin,
+                                       glm::vec3    euler,
+                                       glm::vec3    scale)
     : NamedObject(name),
       m_debug_target_dir(0),
       m_debug_end_effector_tip_dir(0),
@@ -212,7 +212,7 @@ void TransformObject::link_parent(TransformObject* new_parent, bool keep_transfo
 
 void TransformObject::unlink_children()
 {
-    for(std::set<TransformObject*>::iterator p = m_children.begin(); p != m_children.end(); p++) {
+    for(std::set<TransformObject*>::iterator p = m_children.begin(); p != m_children.end(); ++p) {
         (*p)->link_parent(NULL);
     }
 }
@@ -630,7 +630,7 @@ void TransformObject::update_transform()
 
 void TransformObject::update_transform_hier()
 {
-    for(std::set<TransformObject*>::iterator p = m_children.begin(); p != m_children.end(); p++) {
+    for(std::set<TransformObject*>::iterator p = m_children.begin(); p != m_children.end(); ++p) {
         (*p)->mark_dirty_transform(); // mark entire subtree dirty
         (*p)->update_transform_hier();
     }

@@ -136,19 +136,19 @@ Scene::~Scene()
         delete m_camera;
     }
     lights_t::const_iterator p;
-    for(p = m_lights.begin(); p != m_lights.end(); p++) {
+    for(p = m_lights.begin(); p != m_lights.end(); ++p) {
         delete *p;
     }
     meshes_t::const_iterator q;
-    for(q = m_meshes.begin(); q != m_meshes.end(); q++) {
+    for(q = m_meshes.begin(); q != m_meshes.end(); ++q) {
         delete *q;
     }
     materials_t::const_iterator r;
-    for(r = m_materials.begin(); r != m_materials.end(); r++) {
+    for(r = m_materials.begin(); r != m_materials.end(); ++r) {
         delete *r;
     }
     textures_t::const_iterator s;
-    for(s = m_textures.begin(); s != m_textures.end(); s++) {
+    for(s = m_textures.begin(); s != m_textures.end(); ++s) {
         delete *s;
     }
     if(m_light_pos) {
@@ -351,7 +351,7 @@ void Scene::remove_texture(Texture* texture)
 
 void Scene::use_program()
 {
-    for(meshes_t::const_iterator q = m_meshes.begin(); q != m_meshes.end(); q++) {
+    for(meshes_t::const_iterator q = m_meshes.begin(); q != m_meshes.end(); ++q) {
         (*q)->get_shader_context()->get_material()->get_program()->use();
     }
 }
@@ -435,7 +435,7 @@ void Scene::render(bool                clear_canvas,
         shader_context->render();
     }
     int i = 0;
-    for(lights_t::const_iterator p = m_lights.begin(); p != m_lights.end(); p++) {
+    for(lights_t::const_iterator p = m_lights.begin(); p != m_lights.end(); ++p) {
         glm::vec3 light_pos = (*p)->get_origin();
         m_light_pos[i * 3 + 0] = light_pos.x;
         m_light_pos[i * 3 + 1] = light_pos.y;
@@ -452,7 +452,7 @@ void Scene::render(bool                clear_canvas,
     if(frame_buffer) {
         texture = frame_buffer->get_texture();
     }
-    for(meshes_t::const_iterator q = m_meshes.begin(); q != m_meshes.end(); q++) {
+    for(meshes_t::const_iterator q = m_meshes.begin(); q != m_meshes.end(); ++q) {
         Mesh* mesh = (*q);
         if(!mesh->is_visible()) {
             continue;
@@ -619,7 +619,7 @@ void Scene::render_lines_and_text(bool  _draw_guide_wires,
         draw_paths();
     }
 
-    for(meshes_t::const_iterator p = m_meshes.begin(); p != m_meshes.end(); p++) {
+    for(meshes_t::const_iterator p = m_meshes.begin(); p != m_meshes.end(); ++p) {
         if(!(*p)->is_visible()) {
             continue;
         }
@@ -678,7 +678,7 @@ void Scene::draw_targets() const
     glColor3f(1, 0, 1);
     glutWireSphere(TARGET_RADIUS, 4, 2);
 
-    for(std::vector<glm::vec3>::const_iterator p = m_debug_targets.begin(); p != m_debug_targets.end(); p++) {
+    for(std::vector<glm::vec3>::const_iterator p = m_debug_targets.begin(); p != m_debug_targets.end(); ++p) {
         glLoadMatrixf(glm::value_ptr(m_camera->get_transform() * glm::translate(glm::mat4(1), *p)));
 
         // red
@@ -778,8 +778,8 @@ void Scene::draw_paths() const
     glLineWidth(path_width);
     glBegin(GL_LINES);
 
-    for(std::map<long, DebugObjectContext>::const_iterator p = m_debug_object_context.begin(); p != m_debug_object_context.end(); p++) {
-        for(std::vector<glm::vec3>::const_iterator q = (*p).second.m_debug_origin_keyframe_values.begin(); q != (*p).second.m_debug_origin_keyframe_values.end(); q++) {
+    for(std::map<long, DebugObjectContext>::const_iterator p = m_debug_object_context.begin(); p != m_debug_object_context.end(); ++p) {
+        for(std::vector<glm::vec3>::const_iterator q = (*p).second.m_debug_origin_keyframe_values.begin(); q != (*p).second.m_debug_origin_keyframe_values.end(); ++q) {
             glm::vec3 p1 = *q++;
             glm::vec3 p2 = *q++;
             glm::vec3 p3 = *q;
@@ -803,7 +803,7 @@ void Scene::draw_paths() const
         glEnd();
         glLineWidth(1);
 
-        for(std::vector<glm::vec3>::const_iterator r = (*p).second.m_debug_origin_keyframe_values.begin(); r != (*p).second.m_debug_origin_keyframe_values.end(); r++) {
+        for(std::vector<glm::vec3>::const_iterator r = (*p).second.m_debug_origin_keyframe_values.begin(); r != (*p).second.m_debug_origin_keyframe_values.end(); ++r) {
             glLoadMatrixf(glm::value_ptr(m_camera->get_transform() * (*p).second.m_transform));
             glLineWidth(path_width);
             glBegin(GL_LINES);
@@ -826,7 +826,7 @@ void Scene::draw_paths() const
             glLineWidth(1);
         }
 
-        for(std::vector<glm::vec3>::const_iterator t = (*p).second.m_debug_origin_frame_values.begin(); t != (*p).second.m_debug_origin_frame_values.end(); t++) {
+        for(std::vector<glm::vec3>::const_iterator t = (*p).second.m_debug_origin_frame_values.begin(); t != (*p).second.m_debug_origin_frame_values.end(); ++t) {
             if(t == --(*p).second.m_debug_origin_frame_values.end()) {
                 break;
             }
@@ -865,7 +865,7 @@ void Scene::draw_debug_lines(Mesh* mesh) const
     glLineWidth(guide_wire_width);
     glBegin(GL_LINES);
 
-    for(std::vector<std::tuple<glm::vec3, glm::vec3, glm::vec3> >::const_iterator q = mesh->m_debug_lines.begin(); q != mesh->m_debug_lines.end(); q++) {
+    for(std::vector<std::tuple<glm::vec3, glm::vec3, glm::vec3> >::const_iterator q = mesh->m_debug_lines.begin(); q != mesh->m_debug_lines.end(); ++q) {
         glLineWidth(path_width);
         glBegin(GL_LINES);
 
@@ -1281,7 +1281,7 @@ void Scene::render_lights() const
     glLoadMatrixf(glm::value_ptr(m_camera->get_projection_transform()));
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    for(lights_t::const_iterator p = m_lights.begin(); p != m_lights.end(); p++) {
+    for(lights_t::const_iterator p = m_lights.begin(); p != m_lights.end(); ++p) {
         glLoadMatrixf(glm::value_ptr(m_camera->get_transform() * (*p)->get_transform()));
         glColor3f(1, 1, 0);
         glutWireSphere(TARGET_RADIUS, 4, 2);

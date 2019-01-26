@@ -26,7 +26,7 @@
 
 namespace vt {
 
-MeshBase* alloc_mesh_base(std::string name, size_t num_vertex, size_t num_tri);
+MeshBase* alloc_mesh_base(const std::string& name, size_t num_vertex, size_t num_tri);
 
 class Mesh;
 
@@ -68,13 +68,13 @@ void PrimitiveFactory::get_box_corners(glm::vec3        (&points)[8],
     }
 }
 
-Mesh* PrimitiveFactory::create_grid(std::string name,
-                                    int         cols,
-                                    int         rows,
-                                    float       width,
-                                    float       length,
-                                    float       tex_width_scale,
-                                    float       tex_length_scale)
+Mesh* PrimitiveFactory::create_grid(const std::string& name,
+                                          int          cols,
+                                          int          rows,
+                                          float        width,
+                                          float        length,
+                                          float        tex_width_scale,
+                                          float        tex_length_scale)
 {
     int       num_vertex = (rows + 1) * (cols + 1);
     int       num_tri    = rows * cols * 2;
@@ -133,10 +133,10 @@ Mesh* PrimitiveFactory::create_grid(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_sphere(std::string name,
-                                      int         slices,
-                                      int         stacks,
-                                      float       radius)
+Mesh* PrimitiveFactory::create_sphere(const std::string& name,
+                                            int          slices,
+                                            int          stacks,
+                                            float        radius)
 {
     int       cols = slices;
     int       rows = stacks;
@@ -169,10 +169,10 @@ Mesh* PrimitiveFactory::create_sphere(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_hemisphere(std::string name,
-                                          int         slices,
-                                          int         stacks,
-                                          float       radius)
+Mesh* PrimitiveFactory::create_hemisphere(const std::string& name,
+                                                int          slices,
+                                                int          stacks,
+                                                float        radius)
 {
     int       cols = slices;
     int       rows = stacks * 0.5 + 2;
@@ -216,10 +216,10 @@ Mesh* PrimitiveFactory::create_hemisphere(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_cylinder(std::string name,
-                                        int         slices,
-                                        float       radius,
-                                        float       height)
+Mesh* PrimitiveFactory::create_cylinder(const std::string& name,
+                                              int          slices,
+                                              float        radius,
+                                              float        height)
 {
     int       cols = slices;
     int       rows = 5;
@@ -281,10 +281,10 @@ Mesh* PrimitiveFactory::create_cylinder(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_cone(std::string name,
-                                    int         slices,
-                                    float       radius,
-                                    float       height)
+Mesh* PrimitiveFactory::create_cone(const std::string& name,
+                                          int          slices,
+                                          float        radius,
+                                          float        height)
 {
     int       cols = slices;
     int       rows = 3;
@@ -341,11 +341,11 @@ Mesh* PrimitiveFactory::create_cone(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_torus(std::string name,
-                                     int         slices,
-                                     int         stacks,
-                                     float       radius_major,
-                                     float       radius_minor)
+Mesh* PrimitiveFactory::create_torus(const std::string& name,
+                                           int          slices,
+                                           int          stacks,
+                                           float        radius_major,
+                                           float        radius_minor)
 {
     int       cols = slices;
     int       rows = stacks;
@@ -381,10 +381,10 @@ Mesh* PrimitiveFactory::create_torus(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_box(std::string name,
-                                   float       width,
-                                   float       height,
-                                   float       length)
+Mesh* PrimitiveFactory::create_box(const std::string& name,
+                                         float        width,
+                                         float        height,
+                                         float        length)
 {
     MeshBase* mesh = alloc_mesh_base(name, 24, 12);
 
@@ -590,10 +590,10 @@ Mesh* PrimitiveFactory::create_box(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_tetrahedron(std::string name,
-                                           float       width,
-                                           float       height,
-                                           float       length)
+Mesh* PrimitiveFactory::create_tetrahedron(const std::string& name,
+                                                 float        width,
+                                                 float        height,
+                                                 float        length)
 {
     MeshBase* mesh = alloc_mesh_base(name, 12, 4);
 
@@ -628,9 +628,9 @@ Mesh* PrimitiveFactory::create_tetrahedron(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_geosphere(std::string name,
-                                         float       radius,
-                                         int         tessellation_iters)
+Mesh* PrimitiveFactory::create_geosphere(const std::string& name,
+                                               float        radius,
+                                               int          tessellation_iters)
 {
     MeshBase* mesh = cast_mesh_base(create_sphere(name, 4, 2, radius));
     mesh->center_axis();
@@ -645,15 +645,15 @@ Mesh* PrimitiveFactory::create_geosphere(std::string name,
     return cast_mesh(mesh);
 }
 
-Mesh* PrimitiveFactory::create_diamond_brilliant_cut(std::string name,
-                                                     float       radius,
-                                                     float       table_radius,
-                                                     float       height,
-                                                     float       crown_height_to_total_height_ratio,
-                                                     float       upper_girdle_height_to_crown_height_ratio,
-                                                     float       lower_girdle_depth_to_pavilion_depth_ratio,
-                                                     float       girdle_thick_part_thickness,
-                                                     float       girdle_thin_part_thickness)
+Mesh* PrimitiveFactory::create_diamond_brilliant_cut(const std::string& name,
+                                                           float        radius,
+                                                           float        table_radius,
+                                                           float        height,
+                                                           float        crown_height_to_total_height_ratio,
+                                                           float        upper_girdle_height_to_crown_height_ratio,
+                                                           float        lower_girdle_depth_to_pavilion_depth_ratio,
+                                                           float        girdle_thick_part_thickness,
+                                                           float        girdle_thin_part_thickness)
 {
     // table:         8      triangles
     // star:          8      triangles
