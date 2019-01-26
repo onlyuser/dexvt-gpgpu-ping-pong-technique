@@ -21,6 +21,8 @@
 #include <iomanip> // std::setprecision
 #include <math.h>
 
+#include <cfenv>
+
 #define HI_RES_TEX_DIM (64 - 1)
 #define HALF_DIM       static_cast<int>(HI_RES_TEX_DIM * 0.5)
 #define SPRITE_COUNT   10
@@ -676,6 +678,11 @@ void onReshape(int width, int height)
 
 int main(int argc, char* argv[])
 {
+#if 1
+    // https://stackoverflow.com/questions/5393997/stopping-the-debugger-when-a-nan-floating-point-number-is-produced/5394095
+    feenableexcept(FE_INVALID | FE_OVERFLOW);
+#endif
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(init_screen_width, init_screen_height);
