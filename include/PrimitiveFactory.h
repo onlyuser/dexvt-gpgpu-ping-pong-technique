@@ -18,6 +18,7 @@
 #ifndef VT_PRIMITIVE_FACTORY_H_
 #define VT_PRIMITIVE_FACTORY_H_
 
+#include <glm/glm.hpp>
 #include <string>
 
 #define DEFAULT_SLICES 16
@@ -31,6 +32,9 @@ class MeshBase;
 class PrimitiveFactory
 {
 public:
+    static void get_box_corners(glm::vec3        (&points)[8],
+                                const glm::vec3* origin = NULL,
+                                const glm::vec3* dim    = NULL);
     static Mesh* create_grid(std::string name             = "",
                              int         cols             = 1,
                              int         rows             = 1,

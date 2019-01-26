@@ -18,7 +18,7 @@
 #include <Texture.h>
 #include <NamedObject.h>
 #include <FrameObject.h>
-#include <Util.h>
+#include <FilePng.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <string>
@@ -687,7 +687,11 @@ void Texture::update()
         case Texture::DEPTH:
             glTexImage2D(GL_TEXTURE_2D,      // target
                          0,                  // level, 0 = base, no mipmap,
-                         GL_DEPTH_COMPONENT, // internal format
+#if 0
+                         GL_R32F,            // internal format -- causes rendering artifacts in SSAO
+#else
+                         GL_DEPTH_COMPONENT, // internal format -- throws SIGFPE in glTexImage2D when use "feenableexcept(FE_INVALID | FE_OVERFLOW)"
+#endif
                          m_dim.x,            // width
                          m_dim.y,            // height
                          0,                  // border, always 0 in OpenGL ES

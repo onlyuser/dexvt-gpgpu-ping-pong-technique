@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with dexvt-lite.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef H_FILE_3DS
-#define H_FILE_3DS
+#ifndef VT_FILE_3DS_H_
+#define VT_FILE_3DS_H_
 
 #include <stdio.h>
 #include <vector>

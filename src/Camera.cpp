@@ -85,7 +85,7 @@ void Camera::set_target(glm::vec3 target)
 
 const glm::vec3 Camera::get_dir() const
 {
-    return glm::normalize(m_target - m_origin);
+    return safe_normalize(m_target - m_origin);
 }
 
 void Camera::move(glm::vec3 origin, glm::vec3 target)
@@ -219,6 +219,9 @@ void Camera::update_transform()
 {
     glm::vec3 up_direction;
     euler_to_offset(m_euler, &up_direction);
+    if(glm::distance(m_origin, m_target) < EPSILON) {
+        return;
+    }
     m_transform = glm::lookAt(m_origin, m_target, up_direction);
 }
 

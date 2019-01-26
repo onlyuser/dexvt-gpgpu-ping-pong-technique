@@ -478,7 +478,7 @@ bool KeyframeMgr::export_frame_values_for_object(long                    object_
     if(!get_frame_number_range(object_id, &start_frame_number, &end_frame_number)) {
         return false;
     }
-    for(int frame_number = start_frame_number; frame_number != end_frame_number; frame_number++) {
+    for(int frame_number = start_frame_number; frame_number <= end_frame_number; frame_number++) {
         glm::vec3 origin;
         glm::vec3 euler;
         glm::vec3 scale;

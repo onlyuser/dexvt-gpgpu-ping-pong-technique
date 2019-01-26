@@ -83,6 +83,8 @@ public:
     glm::ivec3 get_tri_indices(int index) const;
     void       set_tri_indices(int index, glm::ivec3 indices);
 
+    glm::vec3 get_vert_bitangent(int index) const;
+
     void update_bbox();
     void update_normals_and_tangents();
 

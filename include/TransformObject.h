@@ -22,6 +22,7 @@
 #include <Util.h>
 #include <glm/glm.hpp>
 #include <set>
+#include <tuple>
 
 namespace vt {
 
@@ -38,6 +39,7 @@ public:
     glm::vec3 m_debug_end_effector_tip_dir;
     glm::vec3 m_debug_local_pivot;
     glm::vec3 m_debug_local_target;
+    std::vector<std::tuple<glm::vec3, glm::vec3, glm::vec3> > m_debug_lines;
 
     TransformObject(std::string name,
                     glm::vec3   origin = glm::vec3(0),
@@ -61,7 +63,7 @@ public:
     glm::vec3 get_abs_left_direction();
     glm::vec3 get_abs_up_direction();
     glm::vec3 get_abs_heading();
-    glm::vec3 get_abs_axis_endpoint(euler_index_t euler_index);
+    glm::vec3 get_abs_direction(euler_index_t euler_index);
 
     // coordinate system operations
     void point_at_local(glm::vec3 local_target, glm::vec3* local_up_direction = NULL);
@@ -87,12 +89,12 @@ public:
     void set_joint_constraints_max_deviation(glm::vec3 joint_constraints_max_deviation) { m_joint_constraints_max_deviation = joint_constraints_max_deviation; }
     void set_hinge_type(euler_index_t hinge_type);
     bool is_hinge() const { return m_hinge_type != EULER_INDEX_UNDEF; }
-    void apply_hinge_constraints_perpendicular_to_plane_of_free_rotation();
+    void recalibrate_heading_in_parent_system();
     void apply_hinge_constraints_within_plane_of_free_rotation();
     void apply_joint_constraints();
 
     // advanced features
-    void arcball(glm::vec3* local_arc_pivot_dir,
+    bool arcball(glm::vec3* local_arc_pivot_dir,
                  float*     angle_delta,
                  glm::vec3  abs_target,
                  glm::vec3  abs_reference_point);
@@ -108,6 +110,7 @@ public:
                      float     forward_speed,
                      float     angle_delta,
                      float     avoid_radius);
+    void update_boid(float forward_speed);
 
     // core functionality
     const glm::mat4 &get_transform(bool trace_down = true);
@@ -138,7 +141,7 @@ protected:
         m_is_dirty_transform        = true;
         m_is_dirty_normal_transform = true;
     }
-    virtual void update_transform() = 0;
+    virtual void update_transform();
 
 private:
     // caching

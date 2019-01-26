@@ -59,8 +59,7 @@ bool File3ds::load3ds_impl(std::string filename, int index, std::vector<MeshBase
     }
     FILE* stream = fopen(filename.c_str(), "rb");
     if(stream) {
-        glm::vec3 global_min, global_max;
-        bool init_global_bbox = false;
+        glm::vec3 global_min(BIG_NUMBER), global_max(-BIG_NUMBER);
         fseek(stream, 0, SEEK_END);
         uint32_t size = ftell(stream);
         rewind(stream);
@@ -69,7 +68,7 @@ bool File3ds::load3ds_impl(std::string filename, int index, std::vector<MeshBase
         int count = 0;
         while(ftell(stream) < edit_end) {
             uint32_t object_end = enter_chunk(stream, EDIT_OBJECT, edit_end);
-            char buf[80];
+            char buf[80] = {};
             read_string(stream, buf); // read object name
             int object_type = read_short(stream);
             fseek(stream, -sizeof(uint16_t), SEEK_CUR); // rewind
@@ -100,16 +99,10 @@ bool File3ds::load3ds_impl(std::string filename, int index, std::vector<MeshBase
                     fseek(stream, mesh_base, SEEK_SET);
 
                     mesh->update_bbox();
-                    glm::vec3 local_min, local_max;
+                    glm::vec3 local_min(BIG_NUMBER), local_max(-BIG_NUMBER);
                     mesh->get_min_max(&local_min, &local_max);
-                    if(init_global_bbox) {
-                        global_min = glm::min(global_min, local_min);
-                        global_max = glm::max(global_max, local_max);
-                    } else {
-                        global_min = local_min;
-                        global_max = local_max;
-                        init_global_bbox = true;
-                    }
+                    global_min = glm::min(global_min, local_min);
+                    global_max = glm::max(global_max, local_max);
                     meshes->push_back(mesh);
                 }
                 fseek(stream, mesh_end, SEEK_SET);
@@ -172,8 +165,8 @@ void File3ds::read_faces(FILE* stream, MeshBase* mesh)
 
 uint16_t File3ds::read_short(FILE* stream)
 {
-    uint8_t lo_byte;
-    uint8_t hi_byte;
+    uint8_t lo_byte = 0;
+    uint8_t hi_byte = 0;
     fread(&lo_byte, sizeof(uint8_t), 1, stream);
     fread(&hi_byte, sizeof(uint8_t), 1, stream);
     return MAKEWORD(lo_byte, hi_byte);
